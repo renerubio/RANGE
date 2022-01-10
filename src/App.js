@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import Range from "./components/Range";
 
 const App = () => {
   return (
@@ -38,6 +39,9 @@ const Exercise1 = () => {
       <nav>
         <Link to="/">Back</Link>
       </nav>
+      <div className="d-flex flex-row">
+        <Range min={1} max={10000} />
+      </div>
     </>
   );
 };
@@ -51,6 +55,7 @@ const Exercise2 = () => {
       <nav>
         <Link to="/">Back</Link>
       </nav>
+      <Range />
     </>
   );
 };

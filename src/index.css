@@ -6,3 +6,51 @@
 body {
   padding: 40px 20px;
 }
+.bullet {
+  position: absolute;
+  margin-top: 5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  cursor: grab;
+  border: 1px solid darkgray
+}
+.bullet.goldenrod{background-color: goldenrod;}
+.bullet.gold{background-color: gold;}
+.bullet:hover,
+.bullet:active {
+  margin-top: 0;
+  width: 25px;
+  height: 25px;
+  border-color: lightslategrey;
+}
+.bullet:active {
+  cursor: grabbing;
+}
+.slide {
+  height: 15px;
+  border-bottom: 5px solid lightslategray;
+}
+input {
+  border: 0px;
+  margin: 0;  
+}
+input.min {width: 100px; text-align: right}
+input.max {width: 60px; text-align: right}
+:focus-visible {
+  outline: 0px;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+label {
+  margin-right: 10px;
+}
