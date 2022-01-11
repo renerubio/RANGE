@@ -29,10 +29,12 @@ export const Exercise1 = () => {
   return (
     <>
       <header>
-        <h2>Exercise 1</h2>
+        <h2 data-cy="title-exercise1">Exercise 1</h2>
       </header>
       <nav>
-        <Link to="/">Back to Home</Link>
+        <Link data-cy="back-to-home" to="/">
+          Back to Home
+        </Link>
       </nav>
       {min && max ? (
         <Range min={min} max={max} longRange={300} currencyType="€" />

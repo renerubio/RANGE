@@ -144,7 +144,7 @@ export const Range = ({
   };
 
   return (
-    <div className="d-flex flex-row range-wrapper">
+    <div className="d-flex flex-row range-wrapper" data-cy="range">
       <div className="currency">
         <input
           value={minInputVal}
@@ -154,6 +154,7 @@ export const Range = ({
           readOnly={readOnly}
           min={min}
           max={max}
+          data-cy="min"
         />
         <label>{currencyType}</label>
       </div>
@@ -165,7 +166,7 @@ export const Range = ({
           onDrag={onControlledDragMin}
           grid={grid}
         >
-          <div className="bullet"></div>
+          <div className="bullet" data-cy="draggable-min"></div>
         </Draggable>
         <Draggable
           axis="x"
@@ -174,7 +175,7 @@ export const Range = ({
           onDrag={onControlledDragMax}
           grid={grid}
         >
-          <div className="bullet"></div>
+          <div className="bullet" data-cy="draggable-max"></div>
         </Draggable>
       </div>
       <div className="currency">
@@ -186,6 +187,7 @@ export const Range = ({
           readOnly={readOnly}
           min={min}
           max={max}
+          data-cy="max"
         />
         <label>{currencyType}</label>
       </div>

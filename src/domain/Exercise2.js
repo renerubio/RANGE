@@ -39,10 +39,12 @@ export const Exercise2 = () => {
   return (
     <>
       <header>
-        <h2>Exercise 2</h2>
+        <h2 data-cy="title-exercise2">Exercise 2</h2>
       </header>
       <nav>
-        <Link to="/">Back to Home</Link>
+        <Link data-cy="back-to-home" to="/">
+          Back to Home
+        </Link>
       </nav>
       {min && max && rangeVal?.length ? (
         <Range
@@ -51,7 +53,7 @@ export const Exercise2 = () => {
           longRange={300}
           currencyType="€"
           fixed={2}
-          grid={[300/(rangeVal.length-1), 0]}
+          grid={[300 / (rangeVal.length - 1), 0]}
           readOnly={true}
           rangeVal={rangeVal}
         />
