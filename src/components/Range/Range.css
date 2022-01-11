@@ -1,0 +1,61 @@
+.range-wrapper{
+  margin: 0.9rem 0;
+}
+.bullet {
+  position: absolute;
+  margin: -4px 0 0 -4px;
+  width: 16px;
+  height: 15px;
+  border-radius: 100%;
+  cursor: grab;
+  border: 1px solid grey;
+  background-color: black;
+  transition: background-color 1.5s;
+}
+.bullet:hover,
+.bullet:active {
+  margin: -8px 0 0 -4px;
+  width: 26px;
+  height: 25px;
+  background-color: rgb(220, 230, 233);
+  
+}
+.bullet:active {
+  cursor: grabbing;
+}
+.slide {
+  margin-top: 10px;
+  padding-right:5px;
+  height: 7px;
+  border-radius: 5px;
+  background: black
+}
+input {
+  border: 0px;
+  margin: 0;
+}
+input.min {
+  width: 100px;
+  text-align: right;
+}
+input.max {
+  width: 60px;
+  text-align: right;
+}
+:focus-visible {
+  outline: 0px;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+label {
+  margin-right: 10px;
+}
