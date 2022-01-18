@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Draggable from "react-draggable";
 import { useState, useEffect } from "react";
+import { getMinFixedNumber, getMaxFixedNumber} from "./../../utils"
 
 export const Range = ({
   currencyType = "€",
   min = 1,
   max = 10000,
-  longRange = 200,
-  fixed,
+  width = 200,
   grid = [1, 0],
   readOnly = false,
   rangeVal,
@@ -19,7 +19,7 @@ export const Range = ({
   });
 
   const [maxPosition, setMaxPosition] = useState({
-    x: longRange,
+    x: width,
     y: 0,
   });
 
@@ -29,7 +29,7 @@ export const Range = ({
 
   useEffect(() => {
     setMinPosition({ x: Number(min), y: 0 });
-    setMaxPosition({ x: Number(longRange), y: 0 });
+    setMaxPosition({ x: Number(width), y: 0 });
     setMinInputVal(Number(min));
     setMaxInputVal(Number(max));
   }, [min, max]);
@@ -48,14 +48,14 @@ export const Range = ({
       if (targetValue > maxInputVal) {
         setMinInputVal(maxInputVal - 200);
         setMinPosition({
-          x: (Number(maxInputVal - 200) * longRange) / max,
+          x: (Number(maxInputVal - 200) * width) / max,
           y: 0,
         });
       }
       if (targetValue >= min && targetValue < maxInputVal) {
         setMinInputVal(targetValue);
         setMinPosition({
-          x: (Number(targetValue) * longRange) / max,
+          x: (Number(targetValue) * width) / max,
           y: 0,
         });
       }
@@ -64,13 +64,13 @@ export const Range = ({
 
   const handleChangeMax = (event) => {
     let targetValue = Number(event?.target?.value);
-    let formatmaxPosition = (value) => (Number(value) * longRange) / max;
+    let formatmaxPosition = (value) => (Number(value) * width) / max;
     setMaxInputVal(targetValue);
     setTimeout(() => {
       if (targetValue > max) {
         setMaxInputVal(max);
         setMaxPosition({
-          x: longRange,
+          x: width,
           y: 0,
         });
       }
@@ -97,21 +97,10 @@ export const Range = ({
       setMinPosition({ x, y: 0 });
       if (!rangeVal) {
         setMinInputVal(
-          x === min ? min : parseFloat((x * max) / longRange).toFixed(fixed)
+          x === min ? min : parseInt((x * max) / width)
         );
-      } else {
-        let step = grid[0];
-        let currentValue =
-          min == x.toFixed(2)
-            ? rangeVal[0]
-            : step * 1 + min == x.toFixed(2)
-            ? rangeVal[1]
-            : step * 2 + min == x.toFixed(2)
-            ? rangeVal[2]
-            : step * 3 + min == x.toFixed(2)
-            ? rangeVal[3]
-            : rangeVal[4];
-        setMinInputVal(currentValue);
+      } else {        
+        setMinInputVal(getMinFixedNumber(grid[0], rangeVal, minPosition.x, x));
       }
     }
   };
@@ -122,23 +111,10 @@ export const Range = ({
       setMaxPosition({ x, y: 0 });
       if (!rangeVal) {
         setMaxInputVal(
-          x === min ? min : parseFloat((x * max) / longRange).toFixed(fixed)
+          x === min ? min : parseInt((x * max) / width)
         );
       } else {
-        let step = grid[0];
-        let currentValue =
-          max == x.toFixed(2)
-            ? rangeVal[0]
-            : step * 1  == x
-            ? rangeVal[1]
-            : step * 2  == x
-            ? rangeVal[2]
-            : step * 3  == x
-            ? rangeVal[3]
-            : step * 4  == x
-            ? rangeVal[4]
-            : rangeVal[5];
-            setMaxInputVal(currentValue);
+        setMaxInputVal(getMaxFixedNumber(grid[0], rangeVal, maxPosition.x, x));
       }
     }
   };
@@ -158,10 +134,10 @@ export const Range = ({
         />
         <label>{currencyType}</label>
       </div>
-      <div className="slide" style={{ width: longRange }}>
+      <div className="slide" style={{ width: width }}>
         <Draggable
           axis="x"
-          bounds={{ left: min, right: longRange }}
+          bounds={{ left: min, right: width }}
           position={minPosition}
           onDrag={onControlledDragMin}
           grid={grid}
@@ -170,7 +146,7 @@ export const Range = ({
         </Draggable>
         <Draggable
           axis="x"
-          bounds={{ left: min, right: longRange }}
+          bounds={{ left: min, right: width }}
           position={maxPosition}
           onDrag={onControlledDragMax}
           grid={grid}
@@ -198,7 +174,7 @@ Range.propTypes = {
   currencyType: PropTypes.string.isRequired,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
-  longRange: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
   fixed: PropTypes.number,
   grid: PropTypes.arrayOf(PropTypes.number),
   rangeVal: PropTypes.arrayOf(PropTypes.number),

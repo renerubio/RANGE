@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { Range, Loading } from "../components";
 import { API, API_RANGE_VALUES } from "../../api";
 import { useState, useEffect } from "react";
+import { getGridByWidth } from "../utils";
 
 export const Exercise2 = () => {
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
   const [rangeVal, setRangeVal] = useState(null);
+  const width= 300;
 
   useEffect(() => {
      if (
@@ -46,14 +48,13 @@ export const Exercise2 = () => {
           Back to Home
         </Link>
       </nav>
-      {min && max && rangeVal?.length ? (
+      {min && max && rangeVal && width ? (
         <Range
           min={min}
           max={max}
-          longRange={300}
+          width={width}
           currencyType="€"
-          fixed={2}
-          grid={[300 / (rangeVal.length - 1), 0]}
+          grid={getGridByWidth(width,rangeVal)}
           readOnly={true}
           rangeVal={rangeVal}
         />
