@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import Draggable from "react-draggable";
+//import Draggable from "react-draggable";
+import { Draggable } from "./../";
+
 import { useState, useEffect } from "react";
-import { getMinFixedNumber, getMaxFixedNumber} from "./../../utils"
+import { getMinFixedNumber, getMaxFixedNumber } from "../../utils";
 
 export const Range = ({
   currencyType = "€",
@@ -13,25 +15,25 @@ export const Range = ({
   readOnly = false,
   rangeVal,
 }) => {
+  const refDraggableSlide = useRef(null);
+  const [rangePosition, setrangePosition] = useState(0)
   const [minPosition, setMinPosition] = useState({
     x: min,
     y: 0,
   });
-
   const [maxPosition, setMaxPosition] = useState({
     x: width,
     y: 0,
   });
-
   const [minInputVal, setMinInputVal] = useState(min);
   const [maxInputVal, setMaxInputVal] = useState(max);
-
 
   useEffect(() => {
     setMinPosition({ x: Number(min), y: 0 });
     setMaxPosition({ x: Number(width), y: 0 });
     setMinInputVal(Number(min));
     setMaxInputVal(Number(max));
+    setrangePosition(refDraggableSlide.current.offsetLeft);
   }, [min, max]);
 
   const handleChangeMin = (event) => {
@@ -96,10 +98,8 @@ export const Range = ({
     if (x < maxPosition.x) {
       setMinPosition({ x, y: 0 });
       if (!rangeVal) {
-        setMinInputVal(
-          x === min ? min : parseInt((x * max) / width)
-        );
-      } else {        
+        setMinInputVal(x === min ? min : parseInt((x * max) / width));
+      } else {
         setMinInputVal(getMinFixedNumber(grid[0], rangeVal, minPosition.x, x));
       }
     }
@@ -110,9 +110,7 @@ export const Range = ({
     if (x > minPosition.x) {
       setMaxPosition({ x, y: 0 });
       if (!rangeVal) {
-        setMaxInputVal(
-          x === min ? min : parseInt((x * max) / width)
-        );
+        setMaxInputVal(x === min ? min : parseInt((x * max) / width));
       } else {
         setMaxInputVal(getMaxFixedNumber(grid[0], rangeVal, maxPosition.x, x));
       }
@@ -134,25 +132,27 @@ export const Range = ({
         />
         <label>{currencyType}</label>
       </div>
-      <div className="slide" style={{ width: width }}>
+      <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
         <Draggable
           axis="x"
           bounds={{ left: min, right: width }}
-          position={minPosition}
+          initialPosition={minPosition}
           onDrag={onControlledDragMin}
           grid={grid}
-        >
-          <div className="bullet" data-cy="draggable-min"></div>
-        </Draggable>
+          className="bullet"
+          data-cy="draggable-min"
+          rangePosition={rangePosition}
+        ></Draggable>
         <Draggable
           axis="x"
           bounds={{ left: min, right: width }}
-          position={maxPosition}
+          initialPosition={maxPosition}
           onDrag={onControlledDragMax}
           grid={grid}
-        >
-          <div className="bullet" data-cy="draggable-max"></div>
-        </Draggable>
+          className="bullet"
+          data-cy="draggable-max"
+          rangePosition={rangePosition}
+        ></Draggable>
       </div>
       <div className="currency">
         <input

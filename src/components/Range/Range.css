@@ -24,6 +24,7 @@
   cursor: grabbing;
 }
 .slide {
+  position: relative;
   margin-top: 10px;
   padding-right:5px;
   height: 7px;
