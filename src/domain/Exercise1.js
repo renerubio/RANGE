@@ -14,8 +14,8 @@ export const Exercise1 = () => {
       localStorage.getItem("max") === null
     ) {
       API.get(API_RANGE).then((res) => {
-        setMin(res.data.min);
-        setMax(res.data.max);
+        setMin(Number(res.data.min));
+        setMax(Number(res.data.max));
 
         localStorage.setItem("min", res.data.min);
         localStorage.setItem("max", res.data.max);

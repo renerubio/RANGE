@@ -16,7 +16,7 @@ export const Range = ({
   rangeVal,
 }) => {
   const refDraggableSlide = useRef(null);
-  const [rangePosition, setrangePosition] = useState(0)
+  const [rangePosition, setrangePosition] = useState(0);
   const [minPosition, setMinPosition] = useState({
     x: min,
     y: 0,
@@ -28,13 +28,39 @@ export const Range = ({
   const [minInputVal, setMinInputVal] = useState(min);
   const [maxInputVal, setMaxInputVal] = useState(max);
 
+  const [minBounds, setminBounds] = useState({ left: min, right: width });
+  const [maxBounds, setmaxBounds] = useState({ left: min, right: width });
+
+  const [overlapMargin, setoverlapMargin] = useState(0)
   useEffect(() => {
-    setMinPosition({ x: Number(min), y: 0 });
-    setMaxPosition({ x: Number(width), y: 0 });
-    setMinInputVal(Number(min));
-    setMaxInputVal(Number(max));
+    setminBounds({ left: min, right: maxPosition.x - overlapMargin });
+    setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
+    setMinInputVal(
+      minPosition.x <= min ? min : parseInt((minPosition.x * max) / width)
+    );
+    setMaxInputVal(
+      maxPosition.x === min ? min : parseInt((maxPosition.x * max) / width)
+    );
     setrangePosition(refDraggableSlide.current.offsetLeft);
-  }, [min, max]);
+  }, [min, max, minPosition, maxPosition]);
+
+  const onDragMin = (currentPosition, overlapMargin) => {
+    setoverlapMargin(overlapMargin);
+    setMinPosition(currentPosition);
+    
+    if (rangeVal) {
+      //setMinInputVal(getMinFixedNumber(grid[0], rangeVal, minPosition.x, x));
+    }
+  };
+
+  const onDragMax = (currentPosition, overlapMargin) => {
+    setoverlapMargin(overlapMargin);
+    setMaxPosition(currentPosition);
+    
+    if (rangeVal) {
+      //setMaxInputVal(getMaxFixedNumber(grid[0], rangeVal, maxPosition.x, x));
+    }
+  };
 
   const handleChangeMin = (event) => {
     let targetValue = Number(event?.target?.value);
@@ -93,30 +119,6 @@ export const Range = ({
     }, 500);
   };
 
-  const onControlledDragMin = (e, position) => {
-    const { x } = position;
-    if (x < maxPosition.x) {
-      setMinPosition({ x, y: 0 });
-      if (!rangeVal) {
-        setMinInputVal(x === min ? min : parseInt((x * max) / width));
-      } else {
-        setMinInputVal(getMinFixedNumber(grid[0], rangeVal, minPosition.x, x));
-      }
-    }
-  };
-
-  const onControlledDragMax = (e, position) => {
-    const { x } = position;
-    if (x > minPosition.x) {
-      setMaxPosition({ x, y: 0 });
-      if (!rangeVal) {
-        setMaxInputVal(x === min ? min : parseInt((x * max) / width));
-      } else {
-        setMaxInputVal(getMaxFixedNumber(grid[0], rangeVal, maxPosition.x, x));
-      }
-    }
-  };
-
   return (
     <div className="d-flex flex-row range-wrapper" data-cy="range">
       <div className="currency">
@@ -135,20 +137,18 @@ export const Range = ({
       <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
         <Draggable
           axis="x"
-          bounds={{ left: min, right: width }}
+          bounds={minBounds}
           initialPosition={minPosition}
-          onDrag={onControlledDragMin}
-          grid={grid}
+          onDrag={onDragMin}
           className="bullet"
           data-cy="draggable-min"
           rangePosition={rangePosition}
         ></Draggable>
         <Draggable
           axis="x"
-          bounds={{ left: min, right: width }}
+          bounds={maxBounds}
           initialPosition={maxPosition}
-          onDrag={onControlledDragMax}
-          grid={grid}
+          onDrag={onDragMax}
           className="bullet"
           data-cy="draggable-max"
           rangePosition={rangePosition}
