@@ -37,7 +37,7 @@ export const Exercise1 = () => {
         </Link>
       </nav>
       {min && max ? (
-        <Range min={min} max={max} width={300} currencyType="€" />
+        <Range min={min} max={max} width={300} currencyType="€" axis="x" />
       ) : (
         <Loading text="Range is loading..." />
       )}

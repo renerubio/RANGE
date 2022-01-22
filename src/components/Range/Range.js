@@ -1,9 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-//import Draggable from "react-draggable";
-import { Draggable } from "./../";
-
-import { useState, useEffect } from "react";
 import { getMinFixedNumber, getMaxFixedNumber } from "../../utils";
 
 export const Range = ({
@@ -11,11 +7,14 @@ export const Range = ({
   min = 1,
   max = 10000,
   width = 200,
-  grid = [1, 0],
   readOnly = false,
   rangeVal,
+  axis = "x",
 }) => {
   const refDraggableSlide = useRef(null);
+  const refDraggableMin = useRef(null);
+  const refDraggableMax = useRef(null);
+
   const [rangePosition, setrangePosition] = useState(0);
   const [minPosition, setMinPosition] = useState({
     x: min,
@@ -25,104 +24,144 @@ export const Range = ({
     x: width,
     y: 0,
   });
+
+  const [inputChanged, setinputChanged] = useState(false);
   const [minInputVal, setMinInputVal] = useState(min);
   const [maxInputVal, setMaxInputVal] = useState(max);
 
   const [minBounds, setminBounds] = useState({ left: min, right: width });
   const [maxBounds, setmaxBounds] = useState({ left: min, right: width });
 
-  const [overlapMargin, setoverlapMargin] = useState(0)
+  const [overlapMargin, setoverlapMargin] = useState(0);
   useEffect(() => {
+    setoverlapMargin(refDraggableMin?.current?.offsetWidth);
+    setrangePosition(refDraggableSlide?.current?.offsetLeft);
+
+    if (!inputChanged) {
+      setMinInputVal(
+        minPosition.x <= min ? min : parseInt((minPosition.x * max) / width)
+      );
+      setMaxInputVal(
+        maxPosition.x === min ? min : parseInt((maxPosition.x * max) / width)
+      );
+    }
     setminBounds({ left: min, right: maxPosition.x - overlapMargin });
     setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
-    setMinInputVal(
-      minPosition.x <= min ? min : parseInt((minPosition.x * max) / width)
-    );
-    setMaxInputVal(
-      maxPosition.x === min ? min : parseInt((maxPosition.x * max) / width)
-    );
-    setrangePosition(refDraggableSlide.current.offsetLeft);
-  }, [min, max, minPosition, maxPosition]);
+  }, [min, max, minPosition, maxPosition, inputChanged]);
 
-  const onDragMin = (currentPosition, overlapMargin) => {
-    setoverlapMargin(overlapMargin);
-    setMinPosition(currentPosition);
-    
-    if (rangeVal) {
-      //setMinInputVal(getMinFixedNumber(grid[0], rangeVal, minPosition.x, x));
+  const dragMouseDownMin = (e) => {
+    document.onmouseup = closeDragElement;
+    document.onmousemove = (event)=>elementDrag(event, minBounds, setMinPosition);
+  };
+
+  const dragMouseDownMax = (e) => {
+    document.onmouseup = closeDragElement;
+    document.onmousemove = (event) => elementDrag(event, maxBounds, setMaxPosition);
+  };
+
+  const elementDrag = (e,bounds, setPosition) => {
+    const { left, right } = bounds;
+    const { x, y } = e;
+    const xPositionFormat = x - rangePosition;
+    const yPositionFormat = y - rangePosition;
+    setinputChanged(false);
+    if (xPositionFormat < left) {
+      setPosition({
+        x: left,
+        y: 0,
+      });
+      closeDragElement;
+    } else if (xPositionFormat > right) {
+      setPosition({
+        x: right,
+        y: 0,
+      });
+      closeDragElement;
+    } else {
+      setPosition({
+        x: axis === "y" ? 0 : xPositionFormat,
+        y: axis === "x" ? 0 : yPositionFormat,
+      });
     }
   };
 
-  const onDragMax = (currentPosition, overlapMargin) => {
-    setoverlapMargin(overlapMargin);
-    setMaxPosition(currentPosition);
-    
-    if (rangeVal) {
-      //setMaxInputVal(getMaxFixedNumber(grid[0], rangeVal, maxPosition.x, x));
-    }
+  const closeDragElement = () => {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  };
+
+  const controlHandle = (
+    inputName,
+    targetValue,
+    inputValLimit,
+    setinputVal,
+    setPosition
+  ) => {
+    setinputChanged(true);
+    setinputVal(targetValue);
+    setTimeout(() => {
+      let newInputVal, newPosition;
+      if (inputName === "minInput") {
+        if (targetValue < min) {
+          newInputVal = min;
+          newPosition= min
+        }
+        if (targetValue > inputValLimit) {
+          newInputVal = inputValLimit - 200;
+          newPosition = ((inputValLimit) * width) / max;
+        }
+        if (targetValue >= min && targetValue < inputValLimit) {
+          newInputVal = targetValue;
+          newPosition = ((targetValue ) * width) / max;
+        }
+        setinputVal(newInputVal);
+        setPosition({ x: newPosition, y: 0 });
+      }
+      if (inputName === "maxInput") {       
+        if (targetValue > max) {
+          newInputVal = max;
+          newPosition = width;
+        }
+        if (targetValue < inputValLimit) {
+          newInputVal = min + 200;
+          newPosition = ((inputValLimit) * width) / max;
+        }
+        if (targetValue <= max && targetValue > inputValLimit) {
+          newInputVal = targetValue;
+          newPosition = ((targetValue) * width) / max;
+        }
+        console.log(newInputVal);
+        setinputVal(newInputVal);
+        setPosition({x:newPosition, y:0});
+      }
+      
+    }, 500);
   };
 
   const handleChangeMin = (event) => {
-    let targetValue = Number(event?.target?.value);
-    setMinInputVal(Number(targetValue));
-    setTimeout(() => {
-      if (targetValue < min) {
-        setMinInputVal(min);
-        setMinPosition({
-          x: min,
-          y: 0,
-        });
-      }
-      if (targetValue > maxInputVal) {
-        setMinInputVal(maxInputVal - 200);
-        setMinPosition({
-          x: (Number(maxInputVal - 200) * width) / max,
-          y: 0,
-        });
-      }
-      if (targetValue >= min && targetValue < maxInputVal) {
-        setMinInputVal(targetValue);
-        setMinPosition({
-          x: (Number(targetValue) * width) / max,
-          y: 0,
-        });
-      }
-    }, 500);
+    controlHandle(
+      event?.target?.name,
+      Number(event?.target?.value),
+      maxInputVal,
+      setMinInputVal,
+      setMinPosition
+    );
   };
-
   const handleChangeMax = (event) => {
-    let targetValue = Number(event?.target?.value);
-    let formatmaxPosition = (value) => (Number(value) * width) / max;
-    setMaxInputVal(targetValue);
-    setTimeout(() => {
-      if (targetValue > max) {
-        setMaxInputVal(max);
-        setMaxPosition({
-          x: width,
-          y: 0,
-        });
-      }
-      if (targetValue < minInputVal) {
-        setMaxInputVal(minInputVal + 200);
-        setMaxPosition({
-          x: formatmaxPosition(minInputVal + 200),
-          y: 0,
-        });
-      }
-      if (targetValue <= max && targetValue > minInputVal) {
-        setMaxInputVal(targetValue);
-        setMaxPosition({
-          x: formatmaxPosition(targetValue),
-          y: 0,
-        });
-      }
-    }, 500);
+    controlHandle(
+      event?.target?.name,
+      Number(event?.target?.value),
+      minInputVal,
+      setMaxInputVal,
+      setMaxPosition
+    );
   };
 
   return (
     <div className="d-flex flex-row range-wrapper" data-cy="range">
       <div className="currency">
         <input
+          name="minInput"
           value={minInputVal}
           onChange={handleChangeMin}
           className="min"
@@ -135,27 +174,30 @@ export const Range = ({
         <label>{currencyType}</label>
       </div>
       <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
-        <Draggable
-          axis="x"
-          bounds={minBounds}
-          initialPosition={minPosition}
-          onDrag={onDragMin}
-          className="bullet"
+        <div
+          ref={refDraggableMin}
           data-cy="draggable-min"
-          rangePosition={rangePosition}
-        ></Draggable>
-        <Draggable
-          axis="x"
-          bounds={maxBounds}
-          initialPosition={maxPosition}
-          onDrag={onDragMax}
           className="bullet"
+          onMouseDown={dragMouseDownMin}
+          onMouseUp={closeDragElement}
+          style={{
+            transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
+          }}
+        ></div>
+        <div
+          ref={refDraggableMax}
           data-cy="draggable-max"
-          rangePosition={rangePosition}
-        ></Draggable>
+          className="bullet"
+          onMouseDown={dragMouseDownMax}
+          onMouseUp={closeDragElement}
+          style={{
+            transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
+          }}
+        ></div>
       </div>
       <div className="currency">
         <input
+          name="maxInput"
           value={maxInputVal}
           onChange={handleChangeMax}
           className="max"
@@ -175,8 +217,7 @@ Range.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
-  fixed: PropTypes.number,
-  grid: PropTypes.arrayOf(PropTypes.number),
   rangeVal: PropTypes.arrayOf(PropTypes.number),
   readOnly: PropTypes.bool,
+  axis: PropTypes.string,
 };

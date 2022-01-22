@@ -5,14 +5,16 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: ["eslint:recommended", "plugin:react/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+  ],
   parserOptions: {
-   parser: "babel-eslint",
+    parser: "babel-eslint",
     ecmaVersion: "latest",
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: {
-
-  },
+  rules: {},
 };

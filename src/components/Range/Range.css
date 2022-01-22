@@ -31,17 +31,20 @@
   border-radius: 5px;
   background: black
 }
-input {
+input, label {
   border: 0px;
   margin: 0;
 }
-input.min {
+label.min, label.max {cursor: pointer;}
+input.min, label.min {
   width: 100px;
   text-align: right;
+  margin: 0;
 }
-input.max {
+input.max, label.max {
   width: 60px;
   text-align: right;
+  margin: 0;
 }
 :focus-visible {
   outline: 0px;
