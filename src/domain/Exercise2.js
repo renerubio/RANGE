@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Range, Loading } from "../components";
 import { API, API_RANGE_VALUES } from "../../api";
 import { useState, useEffect } from "react";
-import { getGridByWidth } from "../utils";
 
 export const Exercise2 = () => {
   const [min, setMin] = useState(null);
@@ -54,9 +53,10 @@ export const Exercise2 = () => {
           max={max}
           width={width}
           currencyType="€"
-          grid={getGridByWidth(width,rangeVal)}
           readOnly={true}
           rangeVal={rangeVal}
+          decimals={2}
+          axis="x"
         />
       ) : (
         <Loading text="Range is loading..." />

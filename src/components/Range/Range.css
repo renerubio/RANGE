@@ -1,5 +1,7 @@
-.range-wrapper{
+.range-wrapper {
   margin: 0.9rem 0;
+  align-items: center;
+  height: 60px;
 }
 .bullet {
   position: absolute;
@@ -18,30 +20,34 @@
   width: 26px;
   height: 25px;
   background-color: rgb(220, 230, 233);
-  
 }
 .bullet:active {
   cursor: grabbing;
 }
 .slide {
   position: relative;
-  margin-top: 10px;
-  padding-right:5px;
+  padding-right: 5px;
   height: 7px;
   border-radius: 5px;
-  background: black
+  background: black;
 }
-input, label {
+input,
+label {
   border: 0px;
   margin: 0;
 }
-label.min, label.max {cursor: pointer;}
-input.min, label.min {
+label.min,
+label.max {
+  cursor: pointer;
+}
+input.min,
+label.min {
   width: 100px;
   text-align: right;
   margin: 0;
 }
-input.max, label.max {
+input.max,
+label.max {
   width: 60px;
   text-align: right;
   margin: 0;
