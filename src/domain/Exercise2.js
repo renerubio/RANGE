@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { Range, Loading } from "../components";
 import { API, API_RANGE_VALUES } from "../../api";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Exercise2 = () => {
+  const [t] = useTranslation("global");
+
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
   const [rangeVal, setRangeVal] = useState(null);
@@ -40,11 +43,13 @@ export const Exercise2 = () => {
   return (
     <>
       <header>
-        <h2 data-cy="title-exercise2">Exercise 2</h2>
+        <h2 data-cy="title-exercise2" aria-label={t("header.exercise-2")}>
+          {t("header.exercise-2")}
+        </h2>
       </header>
       <nav>
-        <Link data-cy="back-to-home" to="/">
-          Back to Home
+        <Link data-cy="back-to-home" to="/" aria-label={t("nav.back-to-home")}>
+          {t("nav.back-to-home")}
         </Link>
       </nav>
       {min && max && rangeVal && width ? (
@@ -59,7 +64,7 @@ export const Exercise2 = () => {
           axis="x"
         />
       ) : (
-        <Loading text="Range is loading..." />
+        <Loading text={t("loading")} />
       )}
     </>
   );

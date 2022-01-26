@@ -1,10 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  getGridByWidth,
-  getPositionByInputValue,
-  getInputValueByPosition,
-} from "../../utils";
+import { getPositionByInputValue, getInputValueByPosition } from "../../utils";
+import { useTranslation } from "react-i18next";
 
 export const Range = ({
   currencyType = "€",
@@ -13,10 +10,10 @@ export const Range = ({
   width = 200,
   readOnly = false,
   rangeVal,
-  grid,
   axis = "x",
   decimals = 0,
 }) => {
+  const [t] = useTranslation("global");
   const refDraggableSlide = useRef(null);
   const refDraggableMin = useRef(null);
   const refDraggableMax = useRef(null);
@@ -67,36 +64,18 @@ export const Range = ({
   const dragMouseDownMin = () => {
     document.onmouseup = closeDragElement;
     document.onmousemove = (ev) => {
-      elementDrag(
-        ev,
-        minBounds,
-        setMinPosition,
-        setMinInputVal,
-        "min"
-      );
+      elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
     };
   };
 
   const dragMouseDownMax = () => {
     document.onmouseup = closeDragElement;
     document.onmousemove = (ev) => {
-      elementDrag(
-        ev,
-        maxBounds,
-        setMaxPosition,
-        setMaxInputVal,
-        "max"
-      );
+      elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
     };
   };
 
-  const elementDrag = (
-    e,
-    bounds,
-    setPosition,
-    setInputVal,
-    draggableId
-  ) => {
+  const elementDrag = (e, bounds, setPosition, setInputVal, draggableId) => {
     const { left, right } = bounds;
     const { x, y } = e;
     const xPositionFormat = x - rangePosition;
@@ -139,8 +118,8 @@ export const Range = ({
           (inputValue - element > 0 && inputValue - element < 1)
         ) {
           if (draggableId === "min" && xPositionFormat < right) {
-            setInputVal(element);            
-          }  
+            setInputVal(element);
+          }
           if (draggableId === "max" && xPositionFormat > left) {
             setInputVal(element);
           }
@@ -242,9 +221,13 @@ export const Range = ({
   };
 
   return (
-    <div className="d-flex flex-row range-wrapper" data-cy="range">
-      <div className="currency">
+    <main className="d-flex flex-row range-wrapper" data-cy="range">
+      <section className="currency">
         <input
+          aria-label={
+            readOnly ? t("min-input.aria-readonly") : t("min-input.aria")
+          }
+          id="minInput"
           name="minInput"
           value={minInputVal}
           onChange={handleChangeMin}
@@ -255,8 +238,10 @@ export const Range = ({
           max={max}
           data-cy="min"
         />
-        <label>{currencyType}</label>
-      </div>
+        <label htmlFor="minInput" aria-label={t("label.currency")}>
+          {currencyType}
+        </label>
+      </section>
       <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
         <div
           ref={refDraggableMin}
@@ -267,6 +252,7 @@ export const Range = ({
           style={{
             transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
           }}
+          aria-label={t("draggable.min")}
         ></div>
         <div
           ref={refDraggableMax}
@@ -277,10 +263,15 @@ export const Range = ({
           style={{
             transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
           }}
+          aria-label={t("draggable.max")}
         ></div>
       </div>
-      <div className="currency">
+      <section className="currency">
         <input
+          aria-label={
+            readOnly ? t("max-input.aria-readonly") : t("max-input.aria")
+          }
+          id="maxInput"
           name="maxInput"
           value={maxInputVal}
           onChange={handleChangeMax}
@@ -291,9 +282,11 @@ export const Range = ({
           max={max}
           data-cy="max"
         />
-        <label>{currencyType}</label>
-      </div>
-    </div>
+        <label htmlFor="maxInput" aria-label={t("label.currency")}>
+          {currencyType}
+        </label>
+      </section>
+    </main>
   );
 };
 Range.propTypes = {

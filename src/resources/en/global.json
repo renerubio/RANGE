@@ -1,0 +1,29 @@
+{
+  "header": {
+    "title": "Range React App",
+    "aria-title":"Range React App",
+    "exercise-1": "Exercise 1",
+    "exercise-2": "Exercise 2"
+  },
+  "nav": {
+    "back-to-home": "Back to Home",
+    "aria-link-exercise-1": "Link to exercise 1",
+    "aria-link-exercise-2": "Link to exercise 2"
+  },
+  "loading": "Range is loading...",
+  "min-input": {
+    "aria": "To edit and display the minimum value of range",
+    "aria-readonly": "To display the minimum value of range"
+  },
+  "max-input": {
+    "aria": "To edit and display the maximum value of range",
+    "aria-readonly": "To display the maximum value of range"
+  },
+  "label": {
+    "currency":"To display the symbol of currency"
+  },
+  "draggable": {
+    "min": "Element to drag that updates the minimum input value",
+    "max": "Element to drag that updates the maximum input value"
+  }
+}

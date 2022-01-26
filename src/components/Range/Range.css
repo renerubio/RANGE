@@ -14,6 +14,12 @@
   background-color: black;
   transition: background-color 1.5s, width 0.1s, height 0.1s;
 }
+@media print {
+    .bullet {
+        background-color: black;
+        -webkit-print-color-adjust: exact; 
+    }
+}
 .bullet:hover,
 .bullet:active {
   margin: -8px 0 0 -4px;
@@ -30,6 +36,12 @@
   height: 7px;
   border-radius: 5px;
   background: black;
+}
+@media print {
+    .slide {
+        background-color: black;
+        -webkit-print-color-adjust: exact; 
+    }
 }
 input,
 label {
