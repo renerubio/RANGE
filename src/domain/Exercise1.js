@@ -1,33 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Range, Loading } from "../components";
-import { API, API_RANGE } from "../../api";
+import { API_RANGE } from "../../api";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useAxios } from "../hooks/";
 
 export const Exercise1 = () => {
   const [t] = useTranslation("global");
 
-  const [min, setMin] = useState(null);
-  const [max, setMax] = useState(null);
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
+
+  const { getlocalStorage } = useAxios(API_RANGE,["min","max"]);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("min") === null ||
-      localStorage.getItem("max") === null
-    ) {
-      API.get(API_RANGE).then((res) => {
-        setMin(Number(res.data.min));
-        setMax(Number(res.data.max));
-
-        localStorage.setItem("min", res.data.min);
-        localStorage.setItem("max", res.data.max);
-      });
-    } else {
-      setMin(Number(localStorage.getItem("min")));
-      setMax(Number(localStorage.getItem("max")));
+    if (getlocalStorage) {
+      setMin(Number(getlocalStorage.min));
+      setMax(Number(getlocalStorage.max));
     }
-  }, []);
+  }, [getlocalStorage, getlocalStorage]);
 
   return (
     <>

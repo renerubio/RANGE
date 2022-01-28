@@ -4,41 +4,31 @@ import { Range, Loading } from "../components";
 import { API, API_RANGE_VALUES } from "../../api";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useAxios } from "../hooks/";
 
 export const Exercise2 = () => {
   const [t] = useTranslation("global");
 
-  const [min, setMin] = useState(null);
-  const [max, setMax] = useState(null);
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
+
   const [rangeVal, setRangeVal] = useState(null);
-  const width= 300;
+  const width = 300;
+
+  const { getlocalStorage } = useAxios(API_RANGE_VALUES,["rangeValues"]);
 
   useEffect(() => {
-     if (
-      localStorage.getItem("min2") === null ||
-      localStorage.getItem("max2") === null ||
-      localStorage.getItem("rangeVal") === null
-    ) {
-      API.get(API_RANGE_VALUES).then(res => {
-        let rangeValues = res?.data?.rangeValues;
-        setMin(rangeValues[0]);
-        setMax(rangeValues[rangeValues.length - 1]);
-        setRangeVal(rangeValues);
-
-        localStorage.setItem("min2", rangeValues[0]);
-        localStorage.setItem("max2", rangeValues[rangeValues.length - 1]);
-        localStorage.setItem("rangeVal", rangeValues);
-      });
-    } else {
-      setMin(Number(localStorage.getItem("min2")));
-      setMax(Number(localStorage.getItem("max2")));
-      let arrayRangeVal = localStorage
-        .getItem("rangeVal")
-        .split(",")
-        .map((iNum) => Number(iNum));
-      setRangeVal(arrayRangeVal);
+    if (getlocalStorage) {
+      let rangeValues = getlocalStorage?.rangeValues;
+      rangeValues = rangeValues.split(",").map((element) => Number(element));
+      let minValue = rangeValues[0];
+      let maxValue = rangeValues[rangeValues.length - 1];
+      
+      setMin(minValue);
+      setMax(maxValue);
+      setRangeVal(rangeValues);
     }
-  }, []);
+  }, [getlocalStorage]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { getPositionByInputValue, getInputValueByPosition } from "../../utils";
+import { usePositionByInputValue, useInputValueByPosition } from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 export const Range = ({
@@ -61,18 +61,17 @@ export const Range = ({
     setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
   }, [min, max, minPosition, maxPosition, inputChanged]);
 
-  const dragMouseDownMin = () => {
+  const dragMouseDown = (id) => {
     document.onmouseup = closeDragElement;
-    document.onmousemove = (ev) => {
-      elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
-    };
-  };
-
-  const dragMouseDownMax = () => {
-    document.onmouseup = closeDragElement;
-    document.onmousemove = (ev) => {
-      elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
-    };
+    if (id === "min") {
+      document.onmousemove = (ev) => {
+        elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
+      };
+    } else if(id === "max"){
+      document.onmousemove = (ev) => {
+        elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
+      };
+    }
   };
 
   const elementDrag = (e, bounds, setPosition, setInputVal, draggableId) => {
@@ -83,7 +82,7 @@ export const Range = ({
 
     if (rangeVal) {
       setinputChanged(false);
-      let inputValue = getInputValueByPosition(xPositionFormat, max, width, 2);
+      let inputValue = useInputValueByPosition(xPositionFormat, max, width, 2);
       if (xPositionFormat <= left) {
         setPosition({
           x: draggableId === "min" ? left : left + overlapMargin,
@@ -171,12 +170,12 @@ export const Range = ({
       }
       if (targetValue > inputValLimit) {
         newInputVal =
-          inputValLimit - getInputValueByPosition(overlapMargin, max, width);
-        newPosition = getPositionByInputValue(newInputVal, max, width);
+          inputValLimit - useInputValueByPosition(overlapMargin, max, width);
+        newPosition = usePositionByInputValue(newInputVal, max, width);
       }
       if (targetValue >= min && targetValue < inputValLimit) {
         newInputVal = targetValue;
-        newPosition = getPositionByInputValue(targetValue, max, width);
+        newPosition = usePositionByInputValue(targetValue, max, width);
       }
       setPosition({ x: newPosition, y: 0 });
       setinputVal(newInputVal);
@@ -188,12 +187,12 @@ export const Range = ({
       }
       if (targetValue < inputValLimit) {
         newInputVal =
-          inputValLimit + getInputValueByPosition(overlapMargin, max, width);
-        newPosition = getPositionByInputValue(newInputVal, max, width);
+          inputValLimit + useInputValueByPosition(overlapMargin, max, width);
+        newPosition = usePositionByInputValue(newInputVal, max, width);
       }
       if (targetValue <= max && targetValue > inputValLimit) {
         newInputVal = targetValue;
-        newPosition = getPositionByInputValue(targetValue, max, width);
+        newPosition = usePositionByInputValue(targetValue, max, width);
       }
       setPosition({ x: newPosition, y: 0 });
       setinputVal(newInputVal);
@@ -247,7 +246,7 @@ export const Range = ({
           ref={refDraggableMin}
           data-cy="draggable-min"
           className="bullet bullet-min"
-          onMouseDown={dragMouseDownMin}
+          onMouseDown={()=>dragMouseDown("min")}
           onMouseUp={closeDragElement}
           style={{
             transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
@@ -258,7 +257,7 @@ export const Range = ({
           ref={refDraggableMax}
           data-cy="draggable-max"
           className="bullet bullet-max"
-          onMouseDown={dragMouseDownMax}
+          onMouseDown={()=>dragMouseDown("max")}
           onMouseUp={closeDragElement}
           style={{
             transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
