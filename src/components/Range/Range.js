@@ -67,7 +67,7 @@ export const Range = ({
       document.onmousemove = (ev) => {
         elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
       };
-    } else if(id === "max"){
+    } else if (id === "max") {
       document.onmousemove = (ev) => {
         elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
       };
@@ -242,28 +242,28 @@ export const Range = ({
         </label>
       </section>
       <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
-        <div
+        <button
           ref={refDraggableMin}
           data-cy="draggable-min"
           className="bullet bullet-min"
-          onMouseDown={()=>dragMouseDown("min")}
+          onMouseDown={() => dragMouseDown("min")}
           onMouseUp={closeDragElement}
           style={{
             transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
           }}
           aria-label={t("draggable.min")}
-        ></div>
-        <div
+        ></button>
+        <button
           ref={refDraggableMax}
           data-cy="draggable-max"
           className="bullet bullet-max"
-          onMouseDown={()=>dragMouseDown("max")}
+          onMouseDown={() => dragMouseDown("max")}
           onMouseUp={closeDragElement}
           style={{
             transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
           }}
           aria-label={t("draggable.max")}
-        ></div>
+        ></button>
       </div>
       <section className="currency">
         <input
