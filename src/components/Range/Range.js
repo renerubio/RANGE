@@ -251,7 +251,7 @@ export const Range = ({
           style={{
             transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
           }}
-          aria-label={t("draggable.min")}
+          aria-label={t("draggable.aria-min")}
         ></button>
         <button
           ref={refDraggableMax}
@@ -262,7 +262,7 @@ export const Range = ({
           style={{
             transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
           }}
-          aria-label={t("draggable.max")}
+          aria-label={t("draggable.aria-max")}
         ></button>
       </div>
       <section className="currency">

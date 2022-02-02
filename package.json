@@ -5,13 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.16.7",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
     "cypress": "^9.2.1",
     "i18next": "^21.6.9",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.15.3",
-    "react-router-dom": "^6.2.1"
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^5.0.0"
   },
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.1.0",
@@ -19,12 +22,14 @@
     "@babel/plugin-transform-runtime": "^7.16.10",
     "@babel/preset-env": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
+    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "eslint": "^8.6.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-testing-library": "^5.0.5",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.65.0",
@@ -33,7 +38,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "test": "react-scripts test"
   },
   "keywords": [],
   "author": "",

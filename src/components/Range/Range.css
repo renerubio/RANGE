@@ -20,6 +20,7 @@
         -webkit-print-color-adjust: exact; 
     }
 }
+.bullet:hover {cursor: grab;}
 .bullet:hover,
 .bullet:active {
   margin: -8px 0 0 -4px;

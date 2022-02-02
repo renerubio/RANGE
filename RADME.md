@@ -8,6 +8,9 @@ npm install
 ## RUN APP
 npm start
 
+## start unit test with react testing library
+npm run test
+
 ## start cypress testing environment
 npx cypress open
 ```
