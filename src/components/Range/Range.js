@@ -1,6 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { usePositionByInputValue, useInputValueByPosition } from "../../hooks";
+import {
+  usePositionByInputValue,
+  useInputValueByPosition,
+  useGetClosetNumber,
+} from "../../hooks";
 import { useTranslation } from "react-i18next";
 
 export const Range = ({
@@ -55,11 +59,10 @@ export const Range = ({
 
       setMinInputVal(minPosition.x <= min ? min : formatMinPosition);
       setMaxInputVal(maxPosition.x === min ? min : formatMaxPosition);
-    } else {
     }
     setminBounds({ left: min, right: maxPosition.x - overlapMargin });
     setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
-  }, [min, max, minPosition, maxPosition, inputChanged]);
+  }, [min, max, minPosition, maxPosition, inputChanged, minInputVal, maxInputVal]);
 
   const dragMouseDown = (id) => {
     document.onmouseup = closeDragElement;
@@ -76,10 +79,12 @@ export const Range = ({
 
   const elementDrag = (e, bounds, setPosition, setInputVal, draggableId) => {
     const { left, right } = bounds;
-    const { x, y } = e;
+    const x = e?.x ?? e?.deltaX;
+    const y = e?.y ?? e?.deltaY;
+
     const xPositionFormat = x - rangePosition;
     const yPositionFormat = y - rangePosition;
-
+    window.rangeVal = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
     if (rangeVal) {
       setinputChanged(false);
       let inputValue = useInputValueByPosition(xPositionFormat, max, width, 2);
@@ -111,19 +116,18 @@ export const Range = ({
           closeDragElement;
         }
       }
-      rangeVal.forEach((element) => {
-        if (
-          inputValue === element ||
-          (inputValue - element > 0 && inputValue - element < 1)
-        ) {
-          if (draggableId === "min" && xPositionFormat < right) {
-            setInputVal(element);
-          }
-          if (draggableId === "max" && xPositionFormat > left) {
-            setInputVal(element);
-          }
-        }
-      });
+      if (draggableId === "min") {
+        let rangeValForMin = [...rangeVal];
+        let findMaxInputVal = rangeValForMin.find((val) => val === maxInputVal);
+        let filteredRangeMin = rangeValForMin.filter((val) => val < findMaxInputVal);
+        setInputVal(useGetClosetNumber(inputValue, filteredRangeMin));
+      }
+      if (draggableId === "max") {
+        let rangeValForMax = [...rangeVal];
+        let findMinInputVal = rangeValForMax.find((val) => val === minInputVal);
+        let filteredRangeMax = rangeValForMax.filter((val) => val > findMinInputVal);
+        setInputVal(useGetClosetNumber(inputValue, filteredRangeMax));
+      }
     } else {
       setinputChanged(true);
       if (xPositionFormat <= left) {

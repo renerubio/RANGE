@@ -68,15 +68,35 @@ class rangePageClass {
   }
 
   moveDraggableMin(position) {
-    cy.get("[data-cy=draggable-min]").move(position);
+    cy.get("[data-cy=draggable-min]").trigger("mousedown", position);
+    cy.get("[data-cy=draggable-min]").trigger("mousemove", position);
+    cy.get("[data-cy=draggable-min]").trigger("mouseup");
   }
   moveDraggableMax(position) {
-    cy.get("[data-cy=draggable-max]").move(position);
+    cy.get("[data-cy=draggable-max]").trigger("mousedown", position);
+    cy.get("[data-cy=draggable-max]").trigger("mousemove", position);
+    cy.get("[data-cy=draggable-max]").trigger("mouseup");
   }
 
-  resetDraggableMinMax(){
-    cy.get("[data-cy=draggable-min]").move({ deltaX: -250, deltaY: 0 });
-    cy.get("[data-cy=draggable-max]").move({ deltaX: 250, deltaY: 0 });
+  resetDraggableMinMax() {
+    cy.get("[data-cy=draggable-min]").trigger("mousedown", {
+      deltaX: 131,
+      deltaY: 0,
+    });
+    cy.get("[data-cy=draggable-min]").trigger("mousemove", {
+      deltaX: 131,
+      deltaY: 0,
+    });
+    cy.get("[data-cy=draggable-min]").trigger("mouseup");
+    cy.get("[data-cy=draggable-max]").trigger("mousedown", {
+      deltaX: 480,
+      deltaY: 0,
+    });
+    cy.get("[data-cy=draggable-max]").trigger("mousemove", {
+      deltaX: 480,
+      deltaY: 0,
+    });
+    cy.get("[data-cy=draggable-max]").trigger("mouseup");
   }
 }
 
