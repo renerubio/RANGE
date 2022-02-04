@@ -13,7 +13,7 @@ const values = {
   max: 50,
 };
 
-let rangeRendered;
+let rangeRendered, rangeFixedValuesRendered;
 describe("Range component with min and max values", () => {
   const range = (
     <I18nextProvider i18n={i18next}>
@@ -26,6 +26,7 @@ describe("Range component with min and max values", () => {
       />
     </I18nextProvider>
   );
+
   test("Range renders appropriately", () => {
     rangeRendered = render(range);
     expect(
@@ -40,15 +41,6 @@ describe("Range component with min and max values", () => {
     expect(
       rangeRendered.getByLabelText(test_en.draggable["aria-max"])
     ).toBeInTheDocument();
-  });
-  test("Range have min and max values", () => {
-    rangeRendered = render(range);
-    expect(rangeRendered.getByLabelText(test_en["min-input"].aria)).toHaveValue(
-      values.min
-    );
-    expect(rangeRendered.getByLabelText(test_en["max-input"].aria)).toHaveValue(
-      values.max
-    );
   });
   test("Range have min and max values", () => {
     rangeRendered = render(range);
