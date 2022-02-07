@@ -3,6 +3,7 @@
 1. ✅ Remove library
 2. 💻 Add Unit Test 
    (https://testing-library.com/docs/react-testing-library/intro/)
+   (https://kentcdodds.com/blog/stop-mocking-fetch)
 3. CSS Modules 
    (https://medium.com/@ralph1786/using-css-modules-in-react-app-c2079eadbb87)
 4. ✅ HOOKS (Local Storage, API, common methods)

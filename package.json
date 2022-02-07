@@ -31,6 +31,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-testing-library": "^5.0.5",
     "html-webpack-plugin": "^5.5.0",
+    "msw": "^0.36.8",
     "style-loader": "^3.3.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
