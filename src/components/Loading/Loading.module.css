@@ -1,3 +1,8 @@
+.loading-wrapper {
+  margin: 0.9rem 0;
+  align-items: center;
+  height: 60px;
+}
 .lds-dual-ring {
   display: inline-block;
   width: 80px;

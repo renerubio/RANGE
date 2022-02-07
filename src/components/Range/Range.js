@@ -6,6 +6,7 @@ import {
   useGetClosetNumber,
 } from "@hooks/";
 import { useTranslation } from "react-i18next";
+import styles from "./Range.module.css";
 
 export const Range = ({
   currencyType = "€",
@@ -224,7 +225,10 @@ export const Range = ({
   };
 
   return (
-    <main className="d-flex flex-row range-wrapper" data-cy="range">
+    <main
+      className={`${styles["range-wrapper"]} d-flex flex-row`}
+      data-cy="range"
+    >
       <section className="currency">
         <input
           aria-label={
@@ -234,7 +238,7 @@ export const Range = ({
           name="minInput"
           value={minInputVal}
           onChange={handleChangeMin}
-          className="min"
+          className={`${styles.min}`}
           type="number"
           readOnly={readOnly}
           min={min}
@@ -245,11 +249,15 @@ export const Range = ({
           {currencyType}
         </label>
       </section>
-      <div ref={refDraggableSlide} className="slide" style={{ width: width }}>
+      <div
+        ref={refDraggableSlide}
+        className={`${styles.slide}`}
+        style={{ width: width }}
+      >
         <button
           ref={refDraggableMin}
           data-cy="draggable-min"
-          className="bullet bullet-min"
+          className={`${styles.bullet} ${styles["bullet-min"]}`}
           onMouseDown={() => dragMouseDown("min")}
           onMouseUp={closeDragElement}
           style={{
@@ -260,7 +268,7 @@ export const Range = ({
         <button
           ref={refDraggableMax}
           data-cy="draggable-max"
-          className="bullet bullet-max"
+          className={`${styles.bullet} ${styles["bullet-max"]}`}
           onMouseDown={() => dragMouseDown("max")}
           onMouseUp={closeDragElement}
           style={{
@@ -278,7 +286,7 @@ export const Range = ({
           name="maxInput"
           value={maxInputVal}
           onChange={handleChangeMax}
-          className="max"
+          className={`${styles.max}`}
           type="number"
           readOnly={readOnly}
           min={min}
