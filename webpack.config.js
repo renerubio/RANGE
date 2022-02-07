@@ -28,4 +28,14 @@ module.exports = {
       template: "src/index.html",
     }),
   ],
+  resolve: {
+    alias: {
+      "@api": path.resolve(__dirname, "api/"),
+      "@components": path.resolve(__dirname, "src/components"),
+      "@domain": path.resolve(__dirname, "src/domain"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
+      "@resources": path.resolve(__dirname, "src/resources"),
+      "@mocks": path.resolve(__dirname, "src/mocks"),
+    },
+  },
 };

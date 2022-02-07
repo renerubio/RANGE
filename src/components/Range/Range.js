@@ -4,7 +4,7 @@ import {
   usePositionByInputValue,
   useInputValueByPosition,
   useGetClosetNumber,
-} from "../../hooks";
+} from "@hooks/";
 import { useTranslation } from "react-i18next";
 
 export const Range = ({

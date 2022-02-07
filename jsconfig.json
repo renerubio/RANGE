@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@api/*": [
+        "./api/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@domain/*": [
+        "./src/domain/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@resources/*": [
+        "./src/resources/*"
+      ],
+      "@mocks/*": [
+        "./src/mocks/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
