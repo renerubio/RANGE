@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Range, Loading } from "@components/"
-import { API_RANGE } from "@api/";
+import { Range, Loading } from "components/"
+import { API_RANGE } from "api/";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useAxios } from "@hooks/";
+import { useAxios } from "hooks/";
 
 export const Exercise1 = () => {
   const [t] = useTranslation("global");
@@ -36,7 +36,7 @@ export const Exercise1 = () => {
       {min && max ? (
         <Range min={min} max={max} width={300} currencyType="€" axis="x" />
       ) : (
-        <Loading text={t("loading")} />
+        <Loading />
       )}
     </>
   );

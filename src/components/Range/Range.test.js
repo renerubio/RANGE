@@ -2,11 +2,11 @@ import React from "react";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { I18nextProvider } from "react-i18next";
-import i18next from "@resources/i18nextForTest";
-import test_en from "@resources/en/test.json";
-import { Range } from "@components/";
-import { API, API_RANGE } from "@api/";
-import "@mocks/setup-test";
+import i18next from "resources/i18nextForTest";
+import test_en from "resources/en/global.json";
+import { Range } from "components/";
+import { API, API_RANGE } from "api/";
+import "mocks/setup-test";
 
 const currency = "€";
 const width = 300;

@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Range, Loading } from "@components/";
-import { API, API_RANGE_VALUES } from "@api/";
+import { Range, Loading } from "components/";
+import { API, API_RANGE_VALUES } from "api/";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useAxios } from "@hooks/";
+import { useAxios } from "hooks/";
 
 export const Exercise2 = () => {
   const [t] = useTranslation("global");
@@ -54,7 +54,7 @@ export const Exercise2 = () => {
           axis="x"
         />
       ) : (
-        <Loading text={t("loading")} />
+        <Loading />
       )}
     </>
   );

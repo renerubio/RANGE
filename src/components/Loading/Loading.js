@@ -1,15 +1,15 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
+
 import styles from "./Loading.module.css";
 
-export const Loading = ({ text }) => { 
+export const Loading = () => { 
+  const [t] = useTranslation("global");
   return (
     <div className={`${styles["loading-wrapper"]} d-flex flex-column`}>
-      <div className={`${styles["lds-dual-ring"]} `}></div>
-      <b>{text}</b>
+      <div className={`${styles["lds-dual-ring"]} `}>
+        <b>{t("loading")}</b>
+      </div>
     </div>
   );
-};
-Loading.propTypes = {
-  text: PropTypes.string.isRequired,
 };

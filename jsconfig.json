@@ -2,22 +2,22 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@api/*": [
+      "api/*": [
         "./api/*"
       ],
-      "@components/*": [
+      "components/*": [
         "./src/components/*"
       ],
-      "@domain/*": [
+      "domain/*": [
         "./src/domain/*"
       ],
-      "@hooks/*": [
+      "hooks/*": [
         "./src/hooks/*"
       ],
-      "@resources/*": [
+      "resources/*": [
         "./src/resources/*"
       ],
-      "@mocks/*": [
+      "mocks/*": [
         "./src/mocks/*"
       ]
     }

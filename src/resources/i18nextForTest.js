@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import test_en from "./en/test.json";
+import test_en from "./en/global.json";
 i18next.init({
   interpolation: { escapeValue: false },
   lng: "en",

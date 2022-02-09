@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { API } from "@api/";
+import { API } from "api/";
 import { useLocalStorage } from ".";
 
 export const useAxios = (urlEndPoint, keys) => {
