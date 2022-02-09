@@ -13,5 +13,4 @@
 6. ✅ Utils Modules
 7. ✅ Translations
    https://react.i18next.com/getting-started
-8. 💻 StoryBooks
-9. Mobile
+8. 💻 Mobile

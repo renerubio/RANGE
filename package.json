@@ -22,14 +22,6 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@storybook/addon-actions": "^6.5.0-alpha.38",
-    "@storybook/addon-essentials": "^6.5.0-alpha.38",
-    "@storybook/addon-links": "^6.5.0-alpha.38",
-    "@storybook/builder-webpack5": "^6.5.0-alpha.38",
-    "@storybook/manager-webpack5": "^6.5.0-alpha.38",
-    "@storybook/node-logger": "^6.5.0-alpha.38",
-    "@storybook/preset-create-react-app": "^4.0.0",
-    "@storybook/react": "^6.5.0-alpha.38",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "babel-loader": "^8.2.3",
@@ -40,7 +32,6 @@
     "eslint-plugin-testing-library": "^5.0.5",
     "html-webpack-plugin": "^5.5.0",
     "msw": "^0.36.8",
-    "storybook-css-modules-preset": "^1.1.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.68.0",
     "webpack-cli": "^4.9.2",
@@ -49,9 +40,7 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "cypress": "cypress open",
-    "test": "react-scripts test",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "test": "react-scripts test"
   },
   "jest": {
     "moduleNameMapper": {
