@@ -1,6 +1,6 @@
-# <Range /> component
+# `<Range />` component
 
-## . Instalation and run
+## Instalation and run
 
 
 ```bash
