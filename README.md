@@ -1,4 +1,4 @@
-# Assignment <Range /> component
+# <Range /> component
 
 ## . Instalation and run
 
@@ -16,8 +16,6 @@ npm run test
 
 ## Start cypress testing environment
 npx cypress open
-
-## Starts Storybook in development mode (in progress...)
 
 
 ```

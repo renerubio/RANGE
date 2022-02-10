@@ -65,14 +65,21 @@ export const Range = ({
     setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
   }, [min, max, minPosition, maxPosition, inputChanged, minInputVal, maxInputVal]);
 
-  const dragMouseDown = (id) => {
+  const handleMove = (id) => {
     document.onmouseup = closeDragElement;
+    document.ontouchend = closeDragElement;
     if (id === "min") {
       document.onmousemove = (ev) => {
         elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
       };
+      document.ontouchmove = (ev) => {
+        elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
+      };
     } else if (id === "max") {
       document.onmousemove = (ev) => {
+        elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
+      };
+      document.ontouchmove = (ev) => {
         elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
       };
     }
@@ -80,8 +87,8 @@ export const Range = ({
 
   const elementDrag = (e, bounds, setPosition, setInputVal, draggableId) => {
     const { left, right } = bounds;
-    const x = e?.x ?? e?.deltaX;
-    const y = e?.y ?? e?.deltaY;
+    const x = e?.x ?? e?.deltaX ?? e?.changedTouches[0]?.clientX;
+    const y = e?.y ?? e?.deltaY ?? e?.changedTouches[0]?.clientY;
 
     const xPositionFormat = x - rangePosition;
     const yPositionFormat = y - rangePosition;
@@ -156,6 +163,8 @@ export const Range = ({
   const closeDragElement = () => {
     document.onmouseup = null;
     document.onmousemove = null;
+    document.ontouchend = null;
+    document.ontouchmove = null;
   };
 
   const controlHandle = (
@@ -258,8 +267,10 @@ export const Range = ({
           ref={refDraggableMin}
           data-cy="draggable-min"
           className={`${styles.bullet} ${styles["bullet-min"]}`}
-          onMouseDown={() => dragMouseDown("min")}
+          onMouseDown={() => handleMove("min")}
+          onTouchMove={() => handleMove("min")}
           onMouseUp={closeDragElement}
+          onTouchEnd={closeDragElement}
           style={{
             transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
           }}
@@ -269,8 +280,10 @@ export const Range = ({
           ref={refDraggableMax}
           data-cy="draggable-max"
           className={`${styles.bullet} ${styles["bullet-max"]}`}
-          onMouseDown={() => dragMouseDown("max")}
+          onMouseDown={() => handleMove("max")}
+          onTouchMove={() => handleMove("max")}
           onMouseUp={closeDragElement}
+          onTouchEnd={closeDragElement}
           style={{
             transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
           }}

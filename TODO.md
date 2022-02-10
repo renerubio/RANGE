@@ -13,4 +13,5 @@
 6. ✅ Utils Modules
 7. ✅ Translations
    https://react.i18next.com/getting-started
-8. 💻 Mobile
+8. ✅ Mobile
+   https://developer.mozilla.org/en-US/docs/Web/API/Touch_events

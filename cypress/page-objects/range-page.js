@@ -72,6 +72,7 @@ class rangePageClass {
     cy.get("[data-cy=draggable-min]").trigger("mousemove", position);
     cy.get("[data-cy=draggable-min]").trigger("mouseup");
   }
+
   moveDraggableMax(position) {
     cy.get("[data-cy=draggable-max]").trigger("mousedown", position);
     cy.get("[data-cy=draggable-max]").trigger("mousemove", position);
@@ -97,6 +98,29 @@ class rangePageClass {
       deltaY: 0,
     });
     cy.get("[data-cy=draggable-max]").trigger("mouseup");
+  }
+
+  // Mobile
+
+  moveDraggableMobileMin(position) {
+    cy.get("[data-cy=draggable-min]").trigger("touchmove", position);
+    cy.get("[data-cy=draggable-min]").trigger("touchend", position);
+  }
+
+  moveDraggableMobileMax(position) {
+    cy.get("[data-cy=draggable-max]").trigger("touchmove", position);
+    cy.get("[data-cy=draggable-max]").trigger("touchend", position);
+  }
+
+  resetDraggableMobileMinMax() {
+    cy.get("[data-cy=draggable-min]").trigger("touchmove", 131, 0, {
+      changedTouches: [{ clientX: 131, clientY: 0 }],
+    });
+    cy.get("[data-cy=draggable-min]").trigger("touchend");
+    cy.get("[data-cy=draggable-max]").trigger("touchmove", 480, 0, {
+      changedTouches: [{ clientX: 480, clientY: 0 }],
+    });
+    cy.get("[data-cy=draggable-max]").trigger("touchend");
   }
 }
 
