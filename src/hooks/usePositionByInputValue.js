@@ -1,3 +1,4 @@
-export const usePositionByInputValue = (inputValue, maxInputValue, width) => {
-  return parseInt((inputValue * width)/maxInputValue);
+export const usePositionByInputValue = (PBIVprops) => {
+  const { inputValue, maxInputValue, width } = PBIVprops;
+  return parseInt((inputValue * width) / maxInputValue);
 };

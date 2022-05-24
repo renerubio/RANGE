@@ -5,7 +5,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "index_bundle.js"
+    filename: "index_bundle.js",
   },
   module: {
     rules: [
@@ -21,16 +21,16 @@ module.exports = {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              modules: true
-            }
-          }
-        ]
-      }
-    ]
+              modules: true,
+            },
+          },
+        ],
+      },
+    ],
   },
   mode: "development",
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -39,12 +39,13 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      "api": path.resolve(__dirname, "api/"),
-      "components": path.resolve(__dirname, "src/components"),
-      "domain": path.resolve(__dirname, "src/domain"),
-      "hooks": path.resolve(__dirname, "src/hooks"),
-      "resources": path.resolve(__dirname, "src/resources"),
-      "mocks": path.resolve(__dirname, "src/mocks")
-    }
-  }
+      api: path.resolve(__dirname, "api/"),
+      components: path.resolve(__dirname, "src/components"),
+      domain: path.resolve(__dirname, "src/domain"),
+      hooks: path.resolve(__dirname, "src/hooks"),
+      context: path.resolve(__dirname, "src/context"),
+      resources: path.resolve(__dirname, "src/resources"),
+      mocks: path.resolve(__dirname, "src/mocks"),
+    },
+  },
 };

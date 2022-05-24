@@ -7,11 +7,15 @@
 # testing
 /coverage
 
+# docs
+/docs
+
 # production
 /build
 
 # misc
 .DS_Store
+*.pdf
 .env.local
 .env.development.local
 .env.test.local

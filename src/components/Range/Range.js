@@ -8,15 +8,44 @@ import {
 import { useTranslation } from "react-i18next";
 import styles from "./Range.module.css";
 
+import Currency from "./Currency";
+import Label from "./Label";
+import Input from "./Input";
+
+import { closeDragElement } from "../../helpers/handlers";
+
+/**
+ * Range component
+ *
+ * @component
+ * @param {Object} prop
+ * @param {number} prop.min - minimum value allowed for input and slider
+ * @param {number} prop.max - maximum value allowed for input and slider
+ * @param {number} prop.width - width in pixels of slider
+ * @param {string} prop.currencyType - currency symbol
+ * @param {boolean} prop.readOnly - readonly attribute for input
+ * @param {number[]} prop.rangeVal - list of allowed values for the Range component including minimum and maximum values
+ * @param {string} prop.axis - "x" for horizontal slider or "y" to vertical slider
+ * @param {number} prop.decimals - number of decimals
+ * @example
+ * <Range min={1} max={1000} width={300} currencyType="€" axis="x" />
+ *
+ *
+ * @example
+ * <Range min={1.99} max={70.99} width={200} currencyType="€" readOnly={true}
+ * rangeVal={[1.99, 5.99, 10.99, 30.99, 50.99, 70.99]} decimals={2} axis="x" />
+ *
+ */
+
 export const Range = ({
-  currencyType = "€",
-  min = 1,
-  max = 10000,
-  width = 200,
-  readOnly = false,
+  currencyType,
+  min,
+  max,
+  width,
+  readOnly,
   rangeVal,
-  axis = "x",
-  decimals = 0,
+  axis,
+  decimals,
 }) => {
   const [t] = useTranslation("global");
   const refDraggableSlide = useRef(null);
@@ -63,29 +92,54 @@ export const Range = ({
     }
     setminBounds({ left: min, right: maxPosition.x - overlapMargin });
     setmaxBounds({ left: minPosition.x + overlapMargin, right: width });
-  }, [min, max, minPosition, maxPosition, inputChanged, minInputVal, maxInputVal]);
+  }, [
+    min,
+    max,
+    minPosition,
+    maxPosition,
+    inputChanged,
+    minInputVal,
+    maxInputVal,
+  ]);
 
   const handleMove = (id) => {
     document.onmouseup = closeDragElement;
     document.ontouchend = closeDragElement;
     if (id === "min") {
+      let elementDragProps = {
+        bounds: minBounds,
+        setPosition: setMinPosition,
+        setInputVal: setMinInputVal,
+        draggableId: "min",
+      };
       document.onmousemove = (ev) => {
-        elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
+        elementDragProps.e = ev;
+        elementDrag(elementDragProps);
       };
       document.ontouchmove = (ev) => {
-        elementDrag(ev, minBounds, setMinPosition, setMinInputVal, "min");
+        elementDragProps.e = ev;
+        elementDrag(elementDragProps);
       };
     } else if (id === "max") {
+      let elementDragProps = {
+        bounds: maxBounds,
+        setPosition: setMaxPosition,
+        setInputVal: setMaxInputVal,
+        draggableId: "max",
+      };
       document.onmousemove = (ev) => {
-        elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
+        elementDragProps.e = ev;
+        elementDrag(elementDragProps);
       };
       document.ontouchmove = (ev) => {
-        elementDrag(ev, maxBounds, setMaxPosition, setMaxInputVal, "max");
+        elementDragProps.e = ev;
+        elementDrag(elementDragProps);
       };
     }
   };
 
-  const elementDrag = (e, bounds, setPosition, setInputVal, draggableId) => {
+  const elementDrag = (dragProps) => {
+    const { e, bounds, setPosition, setInputVal, draggableId } = dragProps;
     const { left, right } = bounds;
     const x = e?.x ?? e?.deltaX ?? e?.changedTouches[0]?.clientX;
     const y = e?.y ?? e?.deltaY ?? e?.changedTouches[0]?.clientY;
@@ -95,7 +149,12 @@ export const Range = ({
     window.rangeVal = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
     if (rangeVal) {
       setinputChanged(false);
-      let inputValue = useInputValueByPosition(xPositionFormat, max, width, 2);
+      let inputValue = useInputValueByPosition({
+        position: xPositionFormat,
+        maxInputValue: max,
+        width,
+        decimals: 2,
+      });
       if (xPositionFormat <= left) {
         setPosition({
           x: draggableId === "min" ? left : left + overlapMargin,
@@ -127,13 +186,17 @@ export const Range = ({
       if (draggableId === "min") {
         let rangeValForMin = [...rangeVal];
         let findMaxInputVal = rangeValForMin.find((val) => val === maxInputVal);
-        let filteredRangeMin = rangeValForMin.filter((val) => val < findMaxInputVal);
+        let filteredRangeMin = rangeValForMin.filter(
+          (val) => val < findMaxInputVal
+        );
         setInputVal(useGetClosetNumber(inputValue, filteredRangeMin));
       }
       if (draggableId === "max") {
         let rangeValForMax = [...rangeVal];
         let findMinInputVal = rangeValForMax.find((val) => val === minInputVal);
-        let filteredRangeMax = rangeValForMax.filter((val) => val > findMinInputVal);
+        let filteredRangeMax = rangeValForMax.filter(
+          (val) => val > findMinInputVal
+        );
         setInputVal(useGetClosetNumber(inputValue, filteredRangeMax));
       }
     } else {
@@ -160,20 +223,9 @@ export const Range = ({
     }
   };
 
-  const closeDragElement = () => {
-    document.onmouseup = null;
-    document.onmousemove = null;
-    document.ontouchend = null;
-    document.ontouchmove = null;
-  };
-
-  const controlHandle = (
-    inputName,
-    targetValue,
-    inputValLimit,
-    setinputVal,
-    setPosition
-  ) => {
+  const controlHandle = (handleProps) => {
+    const { inputName, targetValue, inputValLimit, setinputVal, setPosition } =
+      handleProps;
     setinputChanged(false);
     setinputVal(targetValue);
     let newInputVal, newPosition;
@@ -184,12 +236,26 @@ export const Range = ({
       }
       if (targetValue > inputValLimit) {
         newInputVal =
-          inputValLimit - useInputValueByPosition(overlapMargin, max, width);
-        newPosition = usePositionByInputValue(newInputVal, max, width);
+          inputValLimit -
+          useInputValueByPosition({
+            position: overlapMargin,
+            maxInputValue: max,
+            width,
+            decimals: 0,
+          });
+        newPosition = usePositionByInputValue({
+          inputValue: newInputVal,
+          maxInputValue: max,
+          width,
+        });
       }
       if (targetValue >= min && targetValue < inputValLimit) {
         newInputVal = targetValue;
-        newPosition = usePositionByInputValue(targetValue, max, width);
+        newPosition = usePositionByInputValue({
+          inputValue: targetValue,
+          maxInputValue: max,
+          width,
+        });
       }
       setPosition({ x: newPosition, y: 0 });
       setinputVal(newInputVal);
@@ -201,12 +267,26 @@ export const Range = ({
       }
       if (targetValue < inputValLimit) {
         newInputVal =
-          inputValLimit + useInputValueByPosition(overlapMargin, max, width);
-        newPosition = usePositionByInputValue(newInputVal, max, width);
+          inputValLimit +
+          useInputValueByPosition({
+            position: overlapMargin,
+            maxInputValue: max,
+            width,
+            decimals: 0,
+          });
+        newPosition = usePositionByInputValue({
+          inputValue: newInputVal,
+          maxInputValue: max,
+          width,
+        });
       }
       if (targetValue <= max && targetValue > inputValLimit) {
         newInputVal = targetValue;
-        newPosition = usePositionByInputValue(targetValue, max, width);
+        newPosition = usePositionByInputValue({
+          inputValue: targetValue,
+          maxInputValue: max,
+          width,
+        });
       }
       setPosition({ x: newPosition, y: 0 });
       setinputVal(newInputVal);
@@ -214,23 +294,23 @@ export const Range = ({
   };
 
   const handleChangeMin = (event) => {
-    controlHandle(
-      event?.target?.name,
-      Number(event?.target?.value),
-      maxInputVal,
-      setMinInputVal,
-      setMinPosition
-    );
+    controlHandle({
+      inputName: event?.target?.name,
+      targetValue: Number(event?.target?.value),
+      inputValLimit: maxInputVal,
+      setinputVal: setMinInputVal,
+      setPosition: setMinPosition,
+    });
   };
 
   const handleChangeMax = (event) => {
-    controlHandle(
-      event?.target?.name,
-      Number(event?.target?.value),
-      minInputVal,
-      setMaxInputVal,
-      setMaxPosition
-    );
+    controlHandle({
+      inputName: event?.target?.name,
+      targetValue: Number(event?.target?.value),
+      inputValLimit: minInputVal,
+      setinputVal: setMaxInputVal,
+      setPosition: setMaxPosition,
+    });
   };
 
   return (
@@ -238,26 +318,21 @@ export const Range = ({
       className={`${styles["range-wrapper"]} d-flex flex-row`}
       data-cy="range"
     >
-      <section className="currency">
-        <input
-          aria-label={
-            readOnly ? t("min-input.aria-readonly") : t("min-input.aria")
-          }
-          id="minInput"
-          name="minInput"
+      <Currency>
+        <Input
+          id={"minInput"}
+          className={`${styles.min}`}
           value={minInputVal}
           onChange={handleChangeMin}
-          className={`${styles.min}`}
-          type="number"
           readOnly={readOnly}
           min={min}
           max={max}
-          data-cy="min"
+          aria-label={
+            readOnly ? t("min-input.aria-readonly") : t("min-input.aria")
+          }
         />
-        <label htmlFor="minInput" aria-label={t("label.currency")}>
-          {currencyType}
-        </label>
-      </section>
+        <Label htmlFor={"minInput"} currencyType={currencyType} />
+      </Currency>
       <div
         ref={refDraggableSlide}
         className={`${styles.slide}`}
@@ -290,29 +365,25 @@ export const Range = ({
           aria-label={t("draggable.aria-max")}
         ></button>
       </div>
-      <section className="currency">
-        <input
-          aria-label={
-            readOnly ? t("max-input.aria-readonly") : t("max-input.aria")
-          }
-          id="maxInput"
-          name="maxInput"
+      <Currency>
+        <Input
+          id={"maxInput"}
+          className={`${styles.max}`}
           value={maxInputVal}
           onChange={handleChangeMax}
-          className={`${styles.max}`}
-          type="number"
           readOnly={readOnly}
           min={min}
           max={max}
-          data-cy="max"
+          aria-label={
+            readOnly ? t("max-input.aria-readonly") : t("max-input.aria")
+          }
         />
-        <label htmlFor="maxInput" aria-label={t("label.currency")}>
-          {currencyType}
-        </label>
-      </section>
+        {<Label htmlFor={"maxInput"} currencyType={currencyType} />}
+      </Currency>
     </main>
   );
 };
+
 Range.propTypes = {
   currencyType: PropTypes.string.isRequired,
   min: PropTypes.number.isRequired,

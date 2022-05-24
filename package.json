@@ -5,8 +5,6 @@
   "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.17.0",
-    "@testing-library/react-hooks": "^7.0.2",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
     "cypress": "^9.4.1",
     "i18next": "^21.6.11",
@@ -24,13 +22,17 @@
     "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^13.5.0",
     "babel-loader": "^8.2.3",
+    "better-docs": "^2.7.2",
     "css-loader": "^6.6.0",
     "eslint": "^8.8.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-testing-library": "^5.0.5",
     "html-webpack-plugin": "^5.5.0",
+    "jsdoc": "^3.6.10",
     "msw": "^0.36.8",
     "style-loader": "^3.3.1",
     "webpack": "^5.68.0",
@@ -38,15 +40,17 @@
     "webpack-dev-server": "^4.7.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "dev": "webpack-dev-server --open",
     "cypress": "cypress open",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "jest": {
     "moduleNameMapper": {
       "^root(.*)$": "<rootDir>/src$1",
       "^components(.*)$": "<rootDir>/src/components$1",
       "^hooks(.*)$": "<rootDir>/src/hooks$1",
+      "^context(.*)$": "<rootDir>/src/context$1",
       "^api(.*)$": "<rootDir>/api$1",
       "^resources(.*)$": "<rootDir>/src/resources$1",
       "^domain(.*)$": "<rootDir>/src/domain$1",

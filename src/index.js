@@ -5,13 +5,16 @@ import i18next from "resources/i18next";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./domain";
+import { DataProvider } from "context/DataProvider";
 
 const rootElement = document.getElementById("root");
 render(
   <BrowserRouter>
-    <I18nextProvider i18n={i18next}>
-      <App />
-    </I18nextProvider>
+    <DataProvider>
+      <I18nextProvider i18n={i18next}>
+        <App />
+      </I18nextProvider>
+    </DataProvider>
   </BrowserRouter>,
   rootElement
 );
