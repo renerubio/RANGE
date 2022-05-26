@@ -1,6 +1,8 @@
 # TODOs <Range /> component
 
-1. ✅ Remove library
+1. ✅ Remove libraries
+   1.2 ✅ Remove react-draggable library
+   1.2 ✅ Remove axios library
 2. ✅ Add Unit Test
    (https://testing-library.com/docs/react-testing-library/intro/)
    (https://kentcdodds.com/blog/stop-mocking-fetch)
@@ -20,4 +22,5 @@
 8. ✅ Mobile
    https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
 9. 🔳 Documentation JSDoc
-   11.🔳 Storybooks
+10. 🔳 Storybooks
+11. 🔳

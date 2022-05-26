@@ -1,20 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Range, Loading } from "components/";
-import { API_RANGE_VALUES } from "api/";
+import { API_ENDPOINT_RANGE_VALUES } from "api/";
 import { useState, useEffect } from "react";
-import { useAxios } from "hooks/";
+import { useFetch } from "hooks/";
 import Header from "./Header";
 
 export const Exercise2 = (props) => {
-  const { currency, width, axis, readOnly, decimals, t } = props;
+  const { currency, width, axis, readOnly, t } = props;
 
   const [min, setMin] = useState();
   const [max, setMax] = useState();
 
   const [rangeVal, setRangeVal] = useState(null);
 
-  const { getlocalStorage } = useAxios(API_RANGE_VALUES, ["rangeValues"]);
+  const { getlocalStorage } = useFetch(API_ENDPOINT_RANGE_VALUES, [
+    "rangeValues",
+  ]);
 
   useEffect(() => {
     if (getlocalStorage) {

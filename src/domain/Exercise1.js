@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Range, Loading } from "components/";
-import { API_RANGE } from "api/";
-import { useAxios } from "hooks/";
+import { API_ENDPOINT_RANGE } from "api/";
+import { useFetch } from "hooks/";
 import Header from "./Header";
 
 export const Exercise1 = (props) => {
@@ -11,7 +11,7 @@ export const Exercise1 = (props) => {
   const [min, setMin] = useState();
   const [max, setMax] = useState();
 
-  const { getlocalStorage } = useAxios(API_RANGE, ["min", "max"]);
+  const { getlocalStorage } = useFetch(API_ENDPOINT_RANGE, ["min", "max"]);
 
   useEffect(() => {
     if (getlocalStorage) {
