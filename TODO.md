@@ -23,4 +23,5 @@
    https://developer.mozilla.org/en-US/docs/Web/API/Touch_events
 9. 🔳 Documentation JSDoc
 10. 🔳 Storybooks
-11. 🔳
+11. 🔳 Deploy
+12. 🔳 Destructuring of Range component

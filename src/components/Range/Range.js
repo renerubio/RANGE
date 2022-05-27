@@ -8,9 +8,8 @@ import {
 import { useTranslation } from "react-i18next";
 import styles from "./Range.module.css";
 
-import Currency from "./Currency";
-import Label from "./Label";
-import Input from "./Input";
+import CurrencyInput from "./CurrencyInput";
+import Slide from "./Slide";
 
 import { closeDragElement } from "../../helpers/handlers";
 
@@ -48,6 +47,7 @@ export const Range = ({
   decimals,
 }) => {
   const [t] = useTranslation("global");
+
   const refDraggableSlide = useRef(null);
   const refDraggableMin = useRef(null);
   const refDraggableMax = useRef(null);
@@ -318,68 +318,40 @@ export const Range = ({
       className={`${styles["range-wrapper"]} d-flex flex-row`}
       data-cy="range"
     >
-      <Currency>
-        <Input
-          id={"minInput"}
-          className={`${styles.min}`}
-          value={minInputVal}
-          onChange={handleChangeMin}
-          readOnly={readOnly}
-          min={min}
-          max={max}
-          aria-label={
-            readOnly ? t("min-input.aria-readonly") : t("min-input.aria")
-          }
-        />
-        <Label htmlFor={"minInput"} currencyType={currencyType} />
-      </Currency>
-      <div
-        ref={refDraggableSlide}
-        className={`${styles.slide}`}
-        style={{ width: width }}
-      >
-        <button
-          ref={refDraggableMin}
-          data-cy="draggable-min"
-          className={`${styles.bullet} ${styles["bullet-min"]}`}
-          onMouseDown={() => handleMove("min")}
-          onTouchMove={() => handleMove("min")}
-          onMouseUp={closeDragElement}
-          onTouchEnd={closeDragElement}
-          style={{
-            transform: `translate(${minPosition.x}px, ${minPosition.y}px`,
-          }}
-          aria-label={t("draggable.aria-min")}
-        ></button>
-        <button
-          ref={refDraggableMax}
-          data-cy="draggable-max"
-          className={`${styles.bullet} ${styles["bullet-max"]}`}
-          onMouseDown={() => handleMove("max")}
-          onTouchMove={() => handleMove("max")}
-          onMouseUp={closeDragElement}
-          onTouchEnd={closeDragElement}
-          style={{
-            transform: `translate(${maxPosition.x}px, ${maxPosition.y}px`,
-          }}
-          aria-label={t("draggable.aria-max")}
-        ></button>
-      </div>
-      <Currency>
-        <Input
-          id={"maxInput"}
-          className={`${styles.max}`}
-          value={maxInputVal}
-          onChange={handleChangeMax}
-          readOnly={readOnly}
-          min={min}
-          max={max}
-          aria-label={
-            readOnly ? t("max-input.aria-readonly") : t("max-input.aria")
-          }
-        />
-        {<Label htmlFor={"maxInput"} currencyType={currencyType} />}
-      </Currency>
+      <CurrencyInput
+        {...{
+          currencyType,
+          min,
+          max,
+          readOnly,
+        }}
+        inputVal={minInputVal}
+        handleChange={handleChangeMin}
+        type="min"
+      />
+      <Slide
+        {...{
+          width,
+          handleMove,
+          closeDragElement,
+          minPosition,
+          maxPosition,
+          refDraggableSlide,
+          refDraggableMin,
+          refDraggableMax,
+        }}
+      />
+      <CurrencyInput
+        {...{
+          currencyType,
+          min,
+          max,
+          readOnly,
+        }}
+        inputVal={maxInputVal}
+        handleChange={handleChangeMax}
+        type="max"
+      />
     </main>
   );
 };
