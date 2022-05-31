@@ -23,7 +23,7 @@ export const Exercise2 = (props) => {
       let rangeValues = getlocalStorage?.rangeValues;
       rangeValues = rangeValues.split(",").map((element) => Number(element));
       let minValue = rangeValues[0];
-      let maxValue = rangeValues[rangeValues.length - 1];
+      let maxValue = rangeValues.slice(-1)[0];
 
       setMin(minValue);
       setMax(maxValue);
