@@ -33,9 +33,11 @@ export const Exercise2 = (props) => {
 
   return (
     <>
-      <Header aria={t("header.exercise-2")}>{t("header.exercise-2")}</Header>
+      <Header aria-label={t("header.exercise-2")}>
+        {t("header.exercise-2")}
+      </Header>
       <nav>
-        <Link data-cy="back-to-home" to="/" aria-label={t("nav.back-to-home")}>
+        <Link to="/" aria-label={t("nav.back-to-home")}>
           {t("nav.back-to-home")}
         </Link>
       </nav>

@@ -315,8 +315,7 @@ export const Range = ({
 
   return (
     <main
-      className={`${styles["range-wrapper"]} d-flex flex-row`}
-      data-cy="range"
+      className={`${styles["range-wrapper"]} ${styles["d-flex"]} ${styles["flex-row"]}`}
     >
       <CurrencyInput
         {...{

@@ -1,3 +1,9 @@
+.flex-row {
+  flex-direction: row;
+}
+.d-flex {
+  display: flex;
+}
 .range-wrapper {
   margin: 0.9rem 0;
   align-items: center;

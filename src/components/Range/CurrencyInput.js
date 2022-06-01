@@ -21,7 +21,7 @@ const CurrencyInput = ({
   return (
     <section className="currency">
       <Input
-        id={`${type}Input`}
+        type={type}
         className={styles[type]}
         value={inputVal}
         onChange={handleChange}
@@ -38,6 +38,7 @@ const CurrencyInput = ({
 };
 
 CurrencyInput.propTypes = {
+  type: PropTypes.string.isRequired,
   currencyType: PropTypes.string.isRequired,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,

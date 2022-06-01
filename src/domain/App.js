@@ -15,7 +15,7 @@ export const App = () => {
 
   return (
     <>
-      <Header aria={t("header.aria-title")} main={true}>
+      <Header aria-label={t("header.aria-title")} main={true}>
         {t("header.title")}
       </Header>
       <Routes>

@@ -6,19 +6,11 @@ export const Home = () => {
   const [t] = useTranslation("global");
   return (
     <nav>
-      <Link
-        to="/exercise1"
-        data-cy="link-exercise1"
-        aria-label={t("nav.aria-link-exercise-1")}
-      >
+      <Link to="/exercise1" aria-label={t("nav.aria-link-exercise-1")}>
         {t("header.exercise-1")}
       </Link>
       <br />
-      <Link
-        to="/exercise2"
-        data-cy="link-exercise2"
-        aria-label={t("nav.aria-link-exercise-2")}
-      >
+      <Link to="/exercise2" aria-label={t("nav.aria-link-exercise-2")}>
         {t("header.exercise-2")}
       </Link>
     </nav>
