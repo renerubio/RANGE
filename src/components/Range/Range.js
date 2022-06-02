@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
+
 import {
   usePositionByInputValue,
   useInputValueByPosition,
   useGetClosetNumber,
 } from "hooks/";
-import { useTranslation } from "react-i18next";
+
 import styles from "./Range.module.css";
 
 import CurrencyInput from "./CurrencyInput";

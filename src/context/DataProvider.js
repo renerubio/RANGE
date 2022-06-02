@@ -1,25 +1,29 @@
 import React from "react";
 import { useState, createContext } from "react";
 
-const DataContext = createContext();
+export const DataContext = createContext();
+export const DataRangeContext = createContext();
 
-const DataProvider = ({ children }) => {
-  const [currency, setcurrency] = useState("€");
+export const DataProvider = ({ children }) => {
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
   const [width, setwidth] = useState(300);
+  const [currency, setcurrency] = useState("€");
   const [axis, setaxis] = useState("x");
-  const [readOnly, setreadOnly] = useState(true);
   const [decimals, setdecimals] = useState(0);
   return (
     <DataContext.Provider
       value={{
-        currency,
-        setcurrency,
+        min,
+        setMin,
+        max,
+        setMax,
         width,
         setwidth,
+        currency,
+        setcurrency,
         axis,
         setaxis,
-        readOnly,
-        setreadOnly,
         decimals,
         setdecimals,
       }}
@@ -29,6 +33,34 @@ const DataProvider = ({ children }) => {
   );
 };
 
-export { DataProvider };
-
-export default DataContext;
+export const DataRangeProvider = ({ children }) => {
+  const [min, setMin] = useState();
+  const [max, setMax] = useState();
+  const [width, setwidth] = useState(300);
+  const [currency, setcurrency] = useState("€");
+  const [axis, setaxis] = useState("x");
+  const [readOnly, setreadOnly] = useState(true);
+  const [rangeVal, setRangeVal] = useState(null);
+  return (
+    <DataRangeContext.Provider
+      value={{
+        min,
+        setMin,
+        max,
+        setMax,
+        width,
+        setwidth,
+        currency,
+        setcurrency,
+        axis,
+        setaxis,
+        readOnly,
+        setreadOnly,
+        rangeVal,
+        setRangeVal,
+      }}
+    >
+      {children}
+    </DataRangeContext.Provider>
+  );
+};

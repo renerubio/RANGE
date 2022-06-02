@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { DataContext, DataRangeContext } from "context";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import { Range, Loading } from "components/";
 import { API_ENDPOINT_RANGE } from "api/";
 import { useFetch } from "hooks/";
 import Header from "./Header";
 
-export const Exercise1 = (props) => {
-  const { currency, width, axis, decimals, t } = props;
-
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
+export const Exercise1 = () => {
+  const { min, setMin, max, setMax, currency, width, axis, decimals } =
+    useContext(DataContext);
+  const [t] = useTranslation("global");
 
   const { getlocalStorage } = useFetch(API_ENDPOINT_RANGE, ["min", "max"]);
 
