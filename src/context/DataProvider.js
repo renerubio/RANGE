@@ -7,7 +7,7 @@ export const DataRangeContext = createContext();
 export const DataProvider = ({ children }) => {
   const [min, setMin] = useState();
   const [max, setMax] = useState();
-  const [width, setwidth] = useState(300);
+  const [width, setwidth] = useState(window.innerWidth / 2);
   const [currency, setcurrency] = useState("€");
   const [axis, setaxis] = useState("x");
   const [decimals, setdecimals] = useState(0);

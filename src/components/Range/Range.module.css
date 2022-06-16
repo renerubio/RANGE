@@ -1,14 +1,21 @@
 .flex-row {
   flex-direction: row;
 }
+
 .d-flex {
   display: flex;
 }
+
+.justify-content-center {
+  justify-content: center;
+}
+
 .range-wrapper {
   margin: 0.9rem 0;
   align-items: center;
   height: 60px;
 }
+
 .bullet {
   position: absolute;
   margin: -4px 0 0 -4px;
@@ -20,13 +27,18 @@
   background-color: black;
   transition: background-color 1.5s, width 0.1s, height 0.1s;
 }
+
 @media print {
-    .bullet {
-        background-color: black;
-        -webkit-print-color-adjust: exact; 
-    }
+  .bullet {
+    background-color: black;
+    -webkit-print-color-adjust: exact;
+  }
 }
-.bullet:hover {cursor: grab;}
+
+.bullet:hover {
+  cursor: grab;
+}
+
 .bullet:hover,
 .bullet:active {
   margin: -8px 0 0 -4px;
@@ -34,9 +46,11 @@
   height: 25px;
   background-color: rgb(220, 230, 233);
 }
+
 .bullet:active {
   cursor: grabbing;
 }
+
 .slide {
   position: relative;
   padding-right: 5px;
@@ -44,36 +58,57 @@
   border-radius: 5px;
   background: black;
 }
+
 @media print {
-    .slide {
-        background-color: black;
-        -webkit-print-color-adjust: exact; 
-    }
+  .slide {
+    background-color: black;
+    -webkit-print-color-adjust: exact;
+  }
 }
+
+.currency {
+  display: flex;
+}
+
 input,
 label {
   border: 0px;
   margin: 0;
 }
+
 label.min,
 label.max {
   cursor: pointer;
 }
+
 input.min,
 label.min {
   width: 100px;
   text-align: right;
   margin: 0;
 }
+
 input.max,
 label.max {
   width: 60px;
   text-align: right;
   margin: 0;
 }
+
+@media (max-width: 400px) {
+
+  input.min,
+  label.min,
+  input.max,
+  label.max {
+    width: auto
+  }
+}
+
 :focus-visible {
   outline: 0px;
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -85,6 +120,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 label {
   margin-right: 10px;
 }

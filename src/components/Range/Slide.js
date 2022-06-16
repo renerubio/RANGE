@@ -2,7 +2,6 @@ import React from "react";
 
 import PropTypes from "prop-types";
 
-import { useTranslation } from "react-i18next";
 import styles from "./Range.module.css";
 
 import Button from "./Button";
@@ -17,13 +16,12 @@ const Slide = ({
   refDraggableMin,
   refDraggableMax,
 }) => {
-  const [t] = useTranslation("global");
 
   return (
     <div
       ref={refDraggableSlide}
       className={`${styles.slide}`}
-      style={{ width: width }}
+      style={{ width }}
     >
       <Button
         refDraggable={refDraggableMin}
