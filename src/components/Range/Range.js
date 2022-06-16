@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
 
 import {
   usePositionByInputValue,
@@ -20,14 +19,14 @@ import { closeDragElement } from "../../helpers/handlers";
  *
  * @component
  * @param {Object} prop
+ * @param {string} prop.currencyType - currency symbol
  * @param {number} prop.min - minimum value allowed for input and slider
  * @param {number} prop.max - maximum value allowed for input and slider
  * @param {number} prop.width - width in pixels of slider
- * @param {string} prop.currencyType - currency symbol
  * @param {boolean} prop.readOnly - readonly attribute for input
- * @param {number[]} prop.rangeVal - list of allowed values for the Range component including minimum and maximum values
- * @param {string} prop.axis - "x" for horizontal slider or "y" to vertical slider
- * @param {number} prop.decimals - number of decimals
+ * @param {number[]=} prop.rangeVal - list of allowed values for the Range component including minimum and maximum values
+ * @param {string=} prop.axis - "x" for horizontal slider or "y" to vertical slider
+ * @param {number=} prop.decimals - number of decimals
  * @example
  * <Range min={1} max={1000} width={300} currencyType="€" axis="x" />
  *
@@ -48,7 +47,6 @@ export const Range = ({
   axis,
   decimals,
 }) => {
-  const [t] = useTranslation("global");
 
   const refDraggableSlide = useRef(null);
   const refDraggableMin = useRef(null);
@@ -73,10 +71,12 @@ export const Range = ({
 
   const [overlapMargin, setoverlapMargin] = useState(0);
 
+
+
   useEffect(() => {
     setoverlapMargin(
       refDraggableMin?.current?.offsetWidth ??
-        refDraggableMax?.current?.offsetWidth
+      refDraggableMax?.current?.offsetWidth
     );
     setrangePosition(refDraggableSlide?.current?.offsetLeft);
     if (inputChanged) {
@@ -104,6 +104,11 @@ export const Range = ({
     maxInputVal,
   ]);
 
+  /**
+   * handleMove 
+   * 
+   * @param  {string} id - It can be minimum or maximum, it is to identify which bullet the user is moving
+   */
   const handleMove = (id) => {
     document.onmouseup = closeDragElement;
     document.ontouchend = closeDragElement;
@@ -140,6 +145,16 @@ export const Range = ({
     }
   };
 
+  /**
+   * elementDrag function
+   * 
+   * @param  {Object} dragProps - props from bullet that's moving 
+   * @param  {Object} e - DOM event onmousemove (desktop) or ontouchmove (mobile) bullet that's moving
+   * @param  {Object} dragProps.bound - positions limit of left and right of bullet that's moving
+   * @param  {Object} dragProps.setPosition - set State function to update the actual position of bullet that's moving
+   * @param  {Object} dragProps.setInputVal - set State function to update the acutal position of bullet that's moving
+   * @param  {string} dragProps.draggableId} - identifyer of bullet that's moving can be "min" or "max"
+   */
   const elementDrag = (dragProps) => {
     const { e, bounds, setPosition, setInputVal, draggableId } = dragProps;
     const { left, right } = bounds;
@@ -225,6 +240,16 @@ export const Range = ({
     }
   };
 
+  /**
+   * controlHandle function
+   * 
+   * @param  {Object} handleProps - props from input min or max that's editing
+   * @param  {string} handleProps.inputName - it will be 'minInput' or 'maxInput'
+   * @param  {number} handleProps.targetValue - actual value of input that's editing
+   * @param  {number} handleProps.inputValLimit - it number of máximun value allowed
+   * @param  {Object} handleProps.setinputVal - set State function to update the value of input that's editing
+   * @param  {Object} dragProps.setPosition - set State function to update the position of bullet by value of input that's editing
+   */
   const controlHandle = (handleProps) => {
     const { inputName, targetValue, inputValLimit, setinputVal, setPosition } =
       handleProps;
@@ -294,7 +319,10 @@ export const Range = ({
       setinputVal(newInputVal);
     }
   };
-
+  /**
+   * handleChangMin function
+   * @param  {Object} event - DOM event from
+   */
   const handleChangeMin = (event) => {
     controlHandle({
       inputName: event?.target?.name,
@@ -315,9 +343,11 @@ export const Range = ({
     });
   };
 
+  const mainClassStyles = `${styles["justify-content-center"]} ${styles["range-wrapper"]} ${styles["d-flex"]} ${styles["flex-row"]}`;
+
   return (
     <main
-      className={`${styles["range-wrapper"]} ${styles["d-flex"]} ${styles["flex-row"]}`}
+      className={mainClassStyles}
     >
       <CurrencyInput
         {...{
@@ -362,8 +392,8 @@ Range.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
-  rangeVal: PropTypes.arrayOf(PropTypes.number),
   readOnly: PropTypes.bool,
+  rangeVal: PropTypes.arrayOf(PropTypes.number),
   axis: PropTypes.string,
   decimals: PropTypes.number,
 };
